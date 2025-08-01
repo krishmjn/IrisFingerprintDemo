@@ -1,0 +1,12 @@
+{
+  "fingerPrints": [
+    {
+      "id": "12",
+      "name": "testName",
+      "gender": 1,
+      "dob": "2025-07-21T18:15:00.000Z",
+      "exceptionCaseRemarks": "no any fingers",
+      "templateType": "ten"
+    }
+  ]
+}

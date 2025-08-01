@@ -30,10 +30,10 @@ const NavBar = () => {
       />
       <div style={linksContainerStyle}>
         <HeaderLink
-          className={location.pathname === "/demographic" && "active--link"}
-          onClick={() => navigate("/demographic")}
+          className={location.pathname === "/fingerprint" && "active--link"}
+          onClick={() => navigate("/fingerprint")}
         >
-          {"Demogrpahic"}
+          {"Templates"}
         </HeaderLink>
         <HeaderLink
           className={location.pathname === "/search" && "active--link"}

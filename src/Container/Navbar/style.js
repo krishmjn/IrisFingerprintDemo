@@ -28,7 +28,7 @@ export const StyledHeader = styled(Header)`
     display: block;
     content: "";
     width: 100%;
-    max-width: 3.375rem;
+    max-width: 5.375rem;
     height: 0.3125rem;
     background: #498af8;
     position: absolute;
