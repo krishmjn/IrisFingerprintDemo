@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import React from "react";
 
-const ButtonReusable = ({ text, type, disabled, onClick, style }) => {
+const ButtonReusable = ({ text, type, disabled, onClick, style, loading }) => {
   return (
     <div>
       <Button
@@ -10,6 +10,7 @@ const ButtonReusable = ({ text, type, disabled, onClick, style }) => {
         disabled={disabled}
         onClick={onClick}
         style={style}
+        loading={loading}
       >
         {text}
       </Button>

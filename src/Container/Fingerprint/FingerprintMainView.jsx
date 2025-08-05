@@ -1,38 +1,37 @@
-import { Table } from "antd";
+import { Dropdown, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { FingerprintWrapper } from "./style";
 import ButtonReusable from "../../Components/Buttons/ButtonReusable";
-import FingerPrintAddModal from "./FingerPrintAddModal";
+import FingerPrintAddModal from "./CreateForm/FingerPrintAddModal";
 import useGlobalContext from "../../contexts/Global/useGlobalContext";
 import { fetchFingerPrint } from "../../hooks/api/FingerPrint/FetchFingerPrint/FetchFingerPrint";
 import { deleteFingerPrint } from "../../hooks/api/FingerPrint/DeleteFingerPrint/DeleteFingerPrint";
 import StyledModal from "../../Components/Modal/StyledModal";
 import { FingerPrint } from "../../DataModels/FingerPrintDataModels";
-import dayjs from "dayjs";
-import AddDemographicData from "./AddDemographicData";
-import FingerPrintAddFormModal from "./FingerPrintAddFormModal";
+import AddDemographicData from "./CreateForm/AddDemographicData";
+import FingerPrintDetailVIew from "./FingerPrintDetailVIew";
 
 const FingerprintMainView = () => {
+  const [selectedFingerPrint, setSelectedFingerPrint] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const {
     fingerPrints,
     setFingerPrints,
     modalOpen,
     setModalOpen,
-    fromDetail,
     setId,
     setName,
     setGender,
     setDob,
     resetForm,
+    fromDetail,
     deleteModalOpen,
     setDeleteModalOpen,
     editModalOpen,
     setEditModaOpen,
+    setTemplateType,
     setFromDetail,
-    setFingerName,
-    setExceptionRemarks,
-    setCurrentTab,
+    setCurrentStep,
   } = useGlobalContext();
 
   const columns = [
@@ -40,75 +39,30 @@ const FingerprintMainView = () => {
     { title: "Name", dataIndex: "name", key: "name", width: "30%" },
     { title: "Gender", dataIndex: "gender", key: "gender", width: "20%" },
     {
+      title: "Enroll Type",
+      dataIndex: "enrollType",
+      key: "enrollType",
+      width: "20%",
+    },
+    {
       title: "D.O.B",
       dataIndex: "dob",
       key: "dob",
       width: "20%",
-      render: (_, data) => {
-        // return isDayjs(data.dob) ? data.dob.format("YYYY-MM-DD") : data.dob;
-        const dob = dayjs(data.dob); // Convert string or date to dayjs
-        return dob.isValid() ? dob.format("YYYY-MM-DD") : "Invalid Date";
-      },
-    },
-    {
-      title: "Action",
-      key: "action",
-      width: "20%",
-      render: (_text, record) => (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <ButtonReusable
-            type="primary"
-            text="Edit"
-            onClick={(e) => (
-              setFromDetail(false),
-              e.stopPropagation(),
-              handleEditBtnClick(record?.id)
-            )}
-          />
-          <ButtonReusable
-            type="danger"
-            text="Delete"
-            onClick={(e) => (
-              e.stopPropagation(), handleDeleteBtnClick(record?.id)
-            )}
-          />
-        </div>
-      ),
+      // render: (_, data) => {
+      //   // return isDayjs(data.dob) ? data.dob.format("YYYY-MM-DD") : data.dob;
+      //   const dob = dayjs(data.dob); // Convert string or date to dayjs
+      //   return dob.isValid() ? dob.format("YYYY-MM-DD") : "Invalid Date";
+      // },
     },
   ];
 
-  const handleDeleteBtnClick = (id) => {
-    setSelectedId(id);
-    setDeleteModalOpen(true);
-  };
-  const handleEditBtnClick = (id) => {
-    const fingerPrint = fingerPrints.find((item) => item.id === id);
-    if (fingerPrint) {
-      const { id, name, gender, dob, fingerName, exceptionCaseRemarks } =
-        fingerPrint;
-      setId(id);
-      setName(name);
-      setGender(gender);
-      setDob(dob);
-      setEditModaOpen(true);
-      setFingerName(fingerName);
-      setExceptionRemarks(exceptionCaseRemarks);
-    }
-  };
   const handleRowClick = (id) => {
-    // setFromDetail(true);
+    setFromDetail(true);
 
     const fingerPrint = fingerPrints.find((item) => item.id === id);
-    if (fingerPrint) {
-      const { id, name, gender, dob, fingerName, exceptionCaseRemarks } =
-        fingerPrint;
-      setId(id);
-      setName(name);
-      setGender(gender);
-      setDob(dob);
-      setFingerName(fingerName);
-      setExceptionRemarks(exceptionCaseRemarks);
-    }
+    console.log(fingerPrint, 999);
+    setSelectedFingerPrint(fingerPrint);
   };
 
   const handleConfirmDelete = async () => {
@@ -145,21 +99,40 @@ const FingerprintMainView = () => {
 
   const onModalCancel = () => {
     setModalOpen(false);
-    setCurrentTab("1");
+    setCurrentStep(0);
     resetForm();
   };
 
-  const handleSubmit = () => {
-    setFromDetail(false);
-  };
+  const dpdownOptions = [
+    {
+      label: <a>Ten Print</a>,
+      key: "ten",
+    },
+    {
+      label: <a>Chance fingerPrintData</a>,
+      key: "chance",
+    },
+  ];
   return (
     <FingerprintWrapper>
-      <ButtonReusable
-        text={"+ Add Template"}
-        onClick={handleBtnClick}
-        type={"primary"}
-        style={{ position: "absolute", right: "20px" }}
-      />
+      <div style={{ position: "absolute", right: "20px" }}>
+        <Dropdown
+          trigger={["hover"]}
+          menu={{
+            items: dpdownOptions,
+            onClick: ({ key }) => {
+              setTemplateType(key);
+              handleBtnClick();
+            },
+          }}
+          position={"bottomRight"}
+        >
+          <span>
+            <ButtonReusable text={"+  Add Template"} type={"primary"} />
+          </span>
+        </Dropdown>
+      </div>
+
       <Table
         columns={columns}
         style={{ marginTop: "40px", cursor: "pointer" }}
@@ -190,13 +163,11 @@ const FingerprintMainView = () => {
         children={<AddDemographicData fromEdit={true} />}
       />
       <StyledModal
-        title={"Add FingerPrint"}
-        okText={"Add"}
-        visible={fromDetail}
+        title={"Template Details"}
         onCancel={() => setFromDetail(false)}
-        onOk={() => handleSubmit()}
-        style={{ padding: "20px" }}
-        children={<FingerPrintAddFormModal />}
+        visible={fromDetail}
+        footer={null}
+        children={<FingerPrintDetailVIew data={selectedFingerPrint} />}
       />
     </FingerprintWrapper>
   );

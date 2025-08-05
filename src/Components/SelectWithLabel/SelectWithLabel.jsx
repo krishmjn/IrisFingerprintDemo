@@ -8,13 +8,20 @@ const SelectWithLabel = ({
   mode,
   options,
   disabled,
+  placeholder,
+  width,
+  required = false,
 }) => {
   return (
     <div style={{ marginBottom: "16px" }}>
-      <span style={{ display: "block", marginBottom: "8px" }}>{label} :</span>
+      <span style={{ display: "block", marginBottom: "8px" }}>
+        {label}
+        {label ? ":" : ""} {required && <span className="required">*</span>}
+      </span>
       <Select
+        placeholder={placeholder}
         disabled={disabled}
-        style={{ width: "100%" }}
+        style={{ width: width ? width : "100%" }}
         mode={mode}
         value={value}
         onChange={onChange}

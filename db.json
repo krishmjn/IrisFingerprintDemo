@@ -1,11 +1,33 @@
 {
   "fingerPrints": [
     {
-      "id": "12",
-      "name": "testName",
+      "id": "123",
+      "name": "123",
       "gender": 1,
-      "dob": "2025-07-21T18:15:00.000Z",
-      "exceptionCaseRemarks": "no any fingers",
+      "dob": "2025-08-19T18:15:00.000Z",
+      "fingerPrintData": {
+        "Left Ring": {
+          "filePath": "/FingerPrintImg/download.jpeg"
+        },
+        "Left Middle": {
+          "exceptionCaseRemarks": "wart"
+        }
+      },
+      "templateType": "ten"
+    },
+    {
+      "id": "12",
+      "name": "23",
+      "gender": 1,
+      "dob": "2025-08-19T18:15:00.000Z",
+      "fingerPrintData": {
+        "Left Middle": {
+          "filePath": "/FingerPrintImg/download.jpeg"
+        },
+        "Right Index": {
+          "exceptionCaseRemarks": "burn"
+        }
+      },
       "templateType": "ten"
     }
   ]

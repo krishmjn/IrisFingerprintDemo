@@ -1,27 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, message, Upload } from "antd";
-// const props = {
-//   // name: "file",
-//   // action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-//   // headers: {
-//   //   authorization: "authorization-text",
-//   // },
-//   onChange(info) {
-//     console.log(info, 999);
-//     // if (info.file.status !== "uploading") {
-//     //   console.log(info.file, info.fileList);
-//     // }
-//     // if (info.file.status === "done") {
-//     //   message.success(`${info.file.name} file uploaded successfully`);
-//     // } else if (info.file.status === "error") {
-//     //   message.error(`${info.file.name} file upload failed.`);
-//     // }
-//   },
-// };
-const FileUpload = ({ multiple, onChange }) => (
-  <Upload multiple={multiple} onChange={onChange}>
-    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-  </Upload>
-);
+import { Button, Checkbox, Upload } from "antd";
+import { fileToBase64 } from "../../Container/Fingerprint/helper";
+// import { handleFileChange } from "../../Container/Fingerprint/helper";
+
+const FileUpload = ({
+  multiple,
+  onChange,
+  fingerPrintData,
+  selectedFinger,
+  imageOf,
+  allowedFileTypes,
+}) => {
+  const handleFileChange = async (e) => {
+    const file = e.file.originFileObj;
+    if (file) {
+      const base64 = await fileToBase64(file);
+      onChange(base64);
+      console.log("Base64 string:", base64);
+      // send base64 to backend here
+    }
+  };
+  return (
+    <>
+      <Upload
+        multiple={multiple}
+        // onChange={onChange}
+        onChange={(e) => handleFileChange(e)}
+        accept={allowedFileTypes}
+        fileList={
+          fingerPrintData?.[selectedFinger]?.filePath
+            ? [
+                {
+                  uid: "-1",
+                  name: fingerPrintData[selectedFinger].filePath,
+                  status: "done",
+                },
+              ]
+            : []
+        }
+      >
+        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+      </Upload>
+    </>
+  );
+};
 export default FileUpload;

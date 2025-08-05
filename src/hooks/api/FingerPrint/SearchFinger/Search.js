@@ -1,8 +1,8 @@
 import axios from "axios";
 import { BASE_URL } from "../../../../utils/Constants";
 
-export async function addFingerPrint(fingerPrintData) {
-  const url = `${BASE_URL}fingerprint/save-template`;
+export async function searchFingerprint(fingerPrintData) {
+  const url = `${BASE_URL}fingerprint/find_matches`;
   // const url = `${BASE_URL}save-template`;
 
   try {

@@ -8,55 +8,127 @@ export default function useGettersAndSetters() {
   const [templateType, setTemplateType] = useState("ten");
   const [fromDetail, setFromDetail] = useState(false);
   const [currentTab, setCurrentTab] = useState("1");
+  const [currentStep, setCurrentStep] = useState(0);
+  const [imageFromServer, setImageFromServer] = useState(null);
+  const [fingerType, setFingerType] = useState(null);
+  const [base64Image, setBase64Image] = useState(null);
+  const [enhancing, isEnhancing] = useState(false);
+  const [reconstructing, isReconstructing] = useState(false);
+  const [classifying, isClassifying] = useState(false);
+  const [uploading, isUploading] = useState(false);
+  const [uploadedFingers, setUploadedFingers] = useState([]);
+  const [detailedView, setDetailedView] = useState(false);
+  const [fileModalVisible, setFileModalVisible] = useState(false);
+  const [remarksModalVisible, setRemarksModalVisible] = useState(false);
+  const [addFingerModal, setAddFingerModal] = useState(false);
+  const [searching, isSearching] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     id: "",
     gender: 1,
     dob: "",
-    ...(templateType === "ten"
-      ? {
-          fingerName: [],
-          exceptionCaseRemarks: "",
-          filePath: "",
-        }
+  });
+
+  const [fingerPrintData, setFingerPrintData] = useState(
+    templateType === "ten"
+      ? {}
       : {
           caseId: "",
           caseDescription: "",
           fingerName: [],
-          filePath: "",
-        }),
-  });
+        }
+  );
 
   return {
     fingerPrints,
     setFingerPrints,
     modalOpen,
     setModalOpen,
-    formData,
-    setFormData,
     deleteModalOpen,
     setDeleteModalOpen,
     editModalOpen,
     setEditModaOpen,
     templateType,
+    setTemplateType,
     fromDetail,
-
+    setFromDetail,
     currentTab,
     setCurrentTab,
-    setFromDetail,
-    setTemplateType,
+    currentStep,
+    setCurrentStep,
+    formData,
+    setFormData,
+    fingerPrintData,
+    setFingerPrintData,
+    imageFromServer,
+    setImageFromServer,
+    fingerType,
+    setFingerType,
+    base64Image,
+    setBase64Image,
+    enhancing,
+    isEnhancing,
+    reconstructing,
+    isReconstructing,
+    classifying,
+    isClassifying,
+    uploading,
+    isUploading,
+    uploadedFingers,
+    setUploadedFingers,
+    setDetailedView,
+    detailedView,
+    fileModalVisible,
+    setFileModalVisible,
+    remarksModalVisible,
+    setRemarksModalVisible,
+    addFingerModal,
+    setAddFingerModal,
+    searching,
+    isSearching,
+
+    // individual setters for form fields
     setName: (name) => setFormData((prev) => ({ ...prev, name })),
     setId: (id) => setFormData((prev) => ({ ...prev, id })),
     setGender: (gender) => setFormData((prev) => ({ ...prev, gender })),
     setDob: (dob) => setFormData((prev) => ({ ...prev, dob })),
-    setCaseId: (caseId) => setFormData((prev) => ({ ...prev, caseId })),
+
+    // fingerprint-specific setters
+    setCaseId: (caseId) => setFingerPrintData((prev) => ({ ...prev, caseId })),
     setCaseDescription: (caseDescription) =>
-      setFormData((prev) => ({ ...prev, caseDescription })),
+      setFingerPrintData((prev) => ({ ...prev, caseDescription })),
     setFingerName: (fingerName) =>
-      setFormData((prev) => ({ ...prev, fingerName })),
-    setExceptionRemarks: (exceptionCaseRemarks) =>
-      setFormData((prev) => ({ ...prev, exceptionCaseRemarks })),
-    setFilePath: (filePath) => setFormData((prev) => ({ ...prev, filePath })),
-    resetForm: () => setFormData({ name: "", id: "", gender: 1, dob: "" }),
+      setFingerPrintData((prev) => ({ ...prev, fingerName })),
+    setFiles: (fingerName, filePath) =>
+      setFingerPrintData((prev) => ({
+        ...prev,
+        [fingerName]: {
+          ...prev[fingerName],
+          filePath,
+        },
+      })),
+    setExceptionCaseRemarks: (fingerName, exceptionCaseRemarks) =>
+      setFingerPrintData((prev) => ({
+        ...prev,
+        [fingerName]: {
+          ...prev[fingerName],
+          exceptionCaseRemarks,
+        },
+      })),
+
+    // reset handler
+    resetForm: () => {
+      setFormData({ name: "", id: "", gender: 1, dob: "" });
+      setFingerPrintData(
+        templateType === "ten"
+          ? {}
+          : {
+              caseId: "",
+              caseDescription: "",
+              fingerName: [],
+            }
+      );
+    },
   };
 }

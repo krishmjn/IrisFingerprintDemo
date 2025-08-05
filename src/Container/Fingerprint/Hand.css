@@ -26,3 +26,13 @@
 .finger:nth-child(10) { top: 6.2%; left:24.5%; }  /* Left Ring */
 .finger:nth-child(11) { top: 22.4%; left: 19.8%; } /* Left Little */
 
+
+
+.breadcrumb-active {
+  color: black;
+  font-weight: bold;
+}
+
+.breadcrumb-inactive {
+  color: #999;
+} 

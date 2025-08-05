@@ -7,10 +7,13 @@ const InputWithLabel = ({
   onChange,
   disabled = false,
   textarea = false,
+  required = false,
 }) => {
   return (
     <div style={{ marginBottom: "16px" }}>
-      <span style={{ display: "block", marginBottom: "8px" }}>{label} :</span>
+      <span style={{ display: "block", marginBottom: "8px" }}>
+        {label} :{required && <span className="required">*</span>}
+      </span>
       {textarea ? (
         <Input.TextArea value={value} onChange={onChange} disabled={disabled} />
       ) : (

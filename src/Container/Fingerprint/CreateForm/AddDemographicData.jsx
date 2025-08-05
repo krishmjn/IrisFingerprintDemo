@@ -1,10 +1,10 @@
 import React from "react";
-import { FormWrapper, StyledForm } from "./style";
+import { FormWrapper, StyledForm } from "../style";
 import { DatePicker, Form, Input, Radio } from "antd";
-import ButtonReusable from "../../Components/Buttons/ButtonReusable";
-import useGlobalContext from "../../contexts/Global/useGlobalContext";
+import ButtonReusable from "../../../Components/Buttons/ButtonReusable";
+import useGlobalContext from "../../../contexts/Global/useGlobalContext";
 import dayjs from "dayjs";
-import InputWithLabel from "../../Components/InputWithLabel/InputWithLabel";
+import InputWithLabel from "../../../Components/InputWithLabel/InputWithLabel";
 const AddDemographicData = ({ fromEdit }) => {
   const {
     setId,
@@ -37,7 +37,7 @@ const AddDemographicData = ({ fromEdit }) => {
   };
 
   const handleNext = () => {
-    setCurrentTab("2");
+    setCurrentTab("3");
   };
 
   return (
@@ -79,13 +79,6 @@ const AddDemographicData = ({ fromEdit }) => {
               onChange={(date) => handleChange(date, "dob")}
             />
           </Form.Item>
-
-          <ButtonReusable
-            type="primary"
-            onClick={handleNext}
-            style={{ marginTop: "20px", marginLeft: "85%" }}
-            text={"Next"}
-          />
         </>
       </StyledForm>
     </FormWrapper>
